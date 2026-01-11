@@ -5,30 +5,36 @@ separation between ingestion, processing, storage, and analytics, with security 
 operational controls applied across the platform.
 
 ```mermaid
-flowchart LR
-    Sources[Data Sources]
-    Ingest[Ingestion Layer]
-    Stream[Streaming Processing]
-    Batch[Batch Processing]
-    Storage[Data Lake / Lakehouse]
-    Serve[Analytics & BI]
-    GenAI[GenAI / Analytics Assistants]
-    Monitor[Monitoring & Audit Logs]
-    IAM[Identity & Access Management]
+flowchart TB
+  %% MAIN DATA FLOW (STRAIGHT, TOP-DOWN)
+  Sources[Data Sources]
+  Ingest[Ingestion Layer]
+  Process[Processing Layer]
+  Storage[Lakehouse Storage]
+  Serve[Analytics & BI]
+  GenAI[GenAI / Analytics Assistants]
 
-    Sources --> Ingest
-    Ingest --> Stream
-    Ingest --> Batch
-    Stream --> Storage
-    Batch --> Storage
-    Storage --> Serve
-    Serve --> GenAI
+  Sources --> Ingest
+  Ingest --> Process
+  Process --> Storage
+  Storage --> Serve
+  Serve --> GenAI
 
-    IAM --- Ingest
-    IAM --- Storage
-    IAM --- Serve
+  %% CONTROL PLANE (SIDE, NO CROSSING)
+  subgraph Controls[Platform Controls]
+    IAM[Identity & Access]
+    Monitor[Monitoring & Audit]
+    Govern[Governance & Quality]
+  end
 
-    Monitor --- Ingest
-    Monitor --- Stream
-    Monitor --- Batch
-    Monitor --- Serve
+  IAM -.-> Ingest
+  IAM -.-> Storage
+  IAM -.-> Serve
+
+  Monitor -.-> Ingest
+  Monitor -.-> Process
+  Monitor -.-> Serve
+
+  Govern -.-> Storage
+  Govern -.-> Serve
+
