@@ -4,6 +4,10 @@
 This repository contains reference documentation and examples. There are no supported
 release versions at this time.
 
+## Security & Quality
+This repository uses standard GitHub security features (where applicable), including
+dependency alerts and automated scanning.
+
 ## Reporting a Vulnerability
 If you believe you have found a security vulnerability in this repository, please do not
 open a public issue.
